@@ -9,12 +9,12 @@ pipeline {
         }
          stage('build') {
             steps {
-                sh 'python -m py_compile app/app.py'
+                sh 'python3 -m py_compile app/app.py'
             }
         }
         stage('test'){
             steps{
-                sh 'python -m unittest discovery test '
+                sh 'python3 -m unittest discovery test '
             }
         }
         stage('docker image'){
