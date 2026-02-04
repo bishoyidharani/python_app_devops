@@ -29,7 +29,7 @@ pipeline {
         }
         stage('tag and push'){
             steps{
-                withCredentials([usernamePassword(credentialId: 'dockerhub', passwordVariable: 'dockerhubPassword', usernameVariable: 'dockerhubuser' )])
+                withCredentials([usernamePassword(credentialId: 'dockerhub_creds', passwordVariable: 'dockerhubPassword', usernameVariable: 'dockerhubuser' )])
                 sh '''
                     echo $dockerhubPassword | docker login -u $dockerhubuser --password stdin
                     docker tag python-app:latest dockerhub/python-app:latest
