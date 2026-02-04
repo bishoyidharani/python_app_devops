@@ -14,7 +14,7 @@ pipeline {
         }
         stage('test'){
             steps{
-                sh 'python3 -m unittest discovery test '
+                sh 'python3 -m unittest discover test '
             }
         }
         stage('docker image'){
@@ -24,7 +24,17 @@ pipeline {
         }
         stage('docker run'){
             steps{
-                sh 'docker run -rm python-app:latest'
+                sh 'docker run --rm python-app:latest'
+            }
+        }
+        stage('tag and push'){
+            steps{
+                withCredentials([usernamePassword(credentialId: 'dharani', passwordVariable: 'dockerhubPassword', usernameVariable: 'dockerhubuser' )])
+                sh '''
+                    echo $dockerhubPassword | docker login -u $dockerhubuser --password stdin
+                    docker tag python-app:latest dharani/python-app:latest
+                    docker push dharani/python-app:latest
+                '''
             }
         }
     }
