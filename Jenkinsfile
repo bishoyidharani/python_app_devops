@@ -27,15 +27,22 @@ pipeline {
                 sh 'docker run --rm python-app:latest'
             }
         }
-        stage('tag and push'){
-            steps{
-                withCredentials([usernamePassword(credentialId: 'dockerhub_creds', passwordVariable: 'dockerhubPassword', usernameVariable: 'dockerhubuser' )])
-                sh '''
-                    echo $dockerhubPassword | docker login -u $dockerhubuser --password stdin
-                    docker tag python-app:latest dockerhub/python-app:latest
-                    docker push dockerhub/python-app:latest
-                '''
+        stage('tag and push') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub_creds',
+                        usernameVariable: 'dockerhubuser',
+                        passwordVariable: 'dockerhubPassword'
+                    )
+                ]) {
+                    sh '''
+                        echo "$dockerhubPassword" | docker login -u "$dockerhubuser" --password-stdin
+                        docker tag python-app:latest dockerhub/python-app:latest
+                        docker push dockerhub/python-app:latest
+                    '''
+                }
             }
         }
-    }
+   }
 }
