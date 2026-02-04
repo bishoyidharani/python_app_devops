@@ -32,14 +32,14 @@ pipeline {
                 withCredentials([
                     usernamePassword(
                         credentialsId: 'dockerhub_creds',
-                        usernameVariable: 'dockerhubuser',
+                        usernameVariable: 'dockerhub',
                         passwordVariable: 'dockerhubPassword'
                     )
                 ]) {
                     sh '''
                         echo "$dockerhubPassword" | docker login -u "$dockerhubuser" --password-stdin
-                        docker tag python-app:latest dockerhub/python-app:latest
-                        docker push dockerhub/python-app:latest
+                        docker tag python-app:latest dharanibishoyi/python-app:latest
+                        docker push dharanibishoyi/python-app:latest
                     '''
                 }
             }
